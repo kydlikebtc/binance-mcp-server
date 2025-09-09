@@ -74,32 +74,32 @@ export function createAdvancedTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '合约交易对，如"BTCUSDT"。用于获取合约的最小下单量和精度要求。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     riskAmount: {
                         type: 'number',
                         description: '愿意承担的最大风险金额（USDT）。例如：如果账户有1000 USDT，愿意承担2%风险，则填20。',
-                        minimum: 1
+                        minimum: 1,
                     },
                     entryPrice: {
                         type: 'number',
                         description: '预计入场价格（USDT）。可以是当前价格或计划的入场价格。',
-                        minimum: 0.01
+                        minimum: 0.01,
                     },
                     stopLossPrice: {
                         type: 'number',
                         description: '止损价格（USDT）。用于计算每张合约的风险金额。止损价格应该与入场价格有合理差距。',
-                        minimum: 0.01
+                        minimum: 0.01,
                     },
                     leverage: {
                         type: 'number',
                         description: '杠杆倍数，范围1-125。杠杆越高，需要的保证金越少，但风险也越大。',
                         minimum: 1,
-                        maximum: 125
-                    }
+                        maximum: 125,
+                    },
                 },
-                required: ['symbol', 'riskAmount', 'entryPrice', 'stopLossPrice', 'leverage']
-            }
+                required: ['symbol', 'riskAmount', 'entryPrice', 'stopLossPrice', 'leverage'],
+            },
         },
         {
             name: 'binance_analyze_portfolio_risk',
@@ -198,8 +198,8 @@ export function createAdvancedTools(binanceClient) {
             inputSchema: {
                 type: 'object',
                 properties: {},
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_compare_spot_futures_price',
@@ -294,11 +294,11 @@ export function createAdvancedTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '要比较的交易对基础资产，如"BTC"、"ETH"。将自动查询对应的现货和合约价格。',
-                        examples: ['BTC', 'ETH', 'ADA', 'DOT']
-                    }
+                        examples: ['BTC', 'ETH', 'ADA', 'DOT'],
+                    },
                 },
-                required: ['symbol']
-            }
+                required: ['symbol'],
+            },
         },
         {
             name: 'binance_calculate_funding_cost',
@@ -389,21 +389,21 @@ export function createAdvancedTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '永续合约，如"BTCUSDT"。只适用于USDT永续合约，币本位合约暂不支持。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     positionSize: {
                         type: 'number',
                         description: '持仓数量。正数表示多头持仓，负数表示空头持仓。数量用基础资产计量（如BTC数量）。',
-                        minimum: -1000000
+                        minimum: -1000000,
                     },
                     holdHours: {
                         type: 'number',
                         description: '预计持仓小时数。资金费用每8小时收取一次（00:00、08:00、16:00 UTC），按持有时间计算费用次数。',
-                        minimum: 1
-                    }
+                        minimum: 1,
+                    },
                 },
-                required: ['symbol', 'positionSize', 'holdHours']
-            }
+                required: ['symbol', 'positionSize', 'holdHours'],
+            },
         },
         {
             name: 'binance_check_order_precision',
@@ -497,26 +497,26 @@ export function createAdvancedTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '要检查的交易对，如"BTCUSDT"。支持现货和合约交易对。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
                     },
                     price: {
                         type: 'number',
                         description: '要检查的价格。检查是否符合该交易对的价格精度（小数位数）要求。',
-                        minimum: 0.01
+                        minimum: 0.01,
                     },
                     quantity: {
                         type: 'number',
                         description: '要检查的数量。检查是否符合该交易对的数量精度和最小下单量要求。',
-                        minimum: 0.001
+                        minimum: 0.001,
                     },
                     market: {
                         type: 'string',
                         enum: ['spot', 'futures'],
-                        description: 'spot=现货市场，futures=合约市场。不同市场的精度要求可能不同。默认spot。'
-                    }
+                        description: 'spot=现货市场，futures=合约市场。不同市场的精度要求可能不同。默认spot。',
+                    },
                 },
-                required: ['symbol', 'price', 'quantity']
-            }
+                required: ['symbol', 'price', 'quantity'],
+            },
         },
         {
             name: 'binance_get_optimal_trade_size',
@@ -623,23 +623,23 @@ export function createAdvancedTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '要分析的交易对，如"BTCUSDT"。将获取该交易对的订单簿深度信息。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
                     },
                     side: {
                         type: 'string',
                         enum: ['BUY', 'SELL'],
-                        description: 'BUY=分析买入时的最优数量，SELL=分析卖出时的最优数量。买卖方向影响流动性分析。'
+                        description: 'BUY=分析买入时的最优数量，SELL=分析卖出时的最优数量。买卖方向影响流动性分析。',
                     },
                     maxPriceImpact: {
                         type: 'number',
                         description: '可接受的最大价格影响百分比。例如：0.5表示可接受0.5%的价格滑点。默认1.0%。',
                         minimum: 0.1,
-                        maximum: 10.0
-                    }
+                        maximum: 10.0,
+                    },
                 },
-                required: ['symbol', 'side']
-            }
-        }
+                required: ['symbol', 'side'],
+            },
+        },
     ];
 }
 export async function handleAdvancedTool(name, args, binanceClient) {
@@ -653,10 +653,10 @@ export async function handleAdvancedTool(name, args, binanceClient) {
                 const maxContracts = Math.floor(args.riskAmount / riskPerContract);
                 // 获取交易对信息验证最小下单量
                 const exchangeInfo = await binanceClient.getExchangeInfo();
-                const symbolInfo = exchangeInfo.symbols.find(s => s.symbol === args.symbol);
+                const symbolInfo = exchangeInfo.symbols.find((s) => s.symbol === args.symbol);
                 let minQty = 0.001;
                 if (symbolInfo) {
-                    const lotSizeFilter = symbolInfo.filters.find(f => f.filterType === 'LOT_SIZE');
+                    const lotSizeFilter = symbolInfo.filters.find((f) => f.filterType === 'LOT_SIZE');
                     if (lotSizeFilter) {
                         minQty = parseFloat(lotSizeFilter.minQty);
                     }
@@ -672,14 +672,14 @@ export async function handleAdvancedTool(name, args, binanceClient) {
                         requiredMargin: requiredMargin,
                         riskPerContract: riskPerContract,
                         priceRisk: priceRisk,
-                        riskRatio: (actualRisk / args.riskAmount * 100).toFixed(2) + '%',
+                        riskRatio: ((actualRisk / args.riskAmount) * 100).toFixed(2) + '%',
                         analysis: {
                             entryPrice: args.entryPrice,
                             stopLossPrice: args.stopLossPrice,
                             leverage: args.leverage,
-                            symbol: args.symbol
-                        }
-                    }
+                            symbol: args.symbol,
+                        },
+                    },
                 };
             case 'binance_analyze_portfolio_risk':
                 const portfolioAccount = await futuresAPI.getPortfolioAccount();
@@ -689,7 +689,7 @@ export async function handleAdvancedTool(name, args, binanceClient) {
                 const usedMargin = totalBalance - availableBalance;
                 const marginUsageRatio = (usedMargin / totalBalance) * 100;
                 const positions = await futuresAPI.getPositions();
-                const riskPositions = positions.filter(pos => parseFloat(pos.unRealizedProfit) < 0);
+                const riskPositions = positions.filter((pos) => parseFloat(pos.unRealizedProfit) < 0);
                 const totalUnrealizedPnl = positions.reduce((sum, pos) => sum + parseFloat(pos.unRealizedProfit), 0);
                 let riskLevel = 'LOW';
                 if (marginUsageRatio > 80)
@@ -704,31 +704,31 @@ export async function handleAdvancedTool(name, args, binanceClient) {
                             availableBalance: availableBalance,
                             usedMargin: usedMargin,
                             marginUsageRatio: marginUsageRatio.toFixed(2) + '%',
-                            riskLevel: riskLevel
+                            riskLevel: riskLevel,
                         },
                         positions: {
                             totalPositions: positions.length,
-                            profitablePositions: positions.filter(pos => parseFloat(pos.unRealizedProfit) > 0).length,
+                            profitablePositions: positions.filter((pos) => parseFloat(pos.unRealizedProfit) > 0).length,
                             lossPositions: riskPositions.length,
-                            totalUnrealizedPnl: totalUnrealizedPnl
+                            totalUnrealizedPnl: totalUnrealizedPnl,
                         },
                         spotAssets: {
                             totalAssets: spotBalances.length,
-                            totalValue: spotBalances.reduce((sum, bal) => sum + parseFloat(bal.total || '0'), 0)
+                            totalValue: spotBalances.reduce((sum, bal) => sum + parseFloat(bal.total || '0'), 0),
                         },
                         recommendations: [
-                            marginUsageRatio > 70 ? "保证金使用率较高，建议降低仓位或增加资金" : null,
-                            riskPositions.length > positions.length * 0.6 ? "亏损仓位较多，建议检查止损策略" : null,
-                            totalUnrealizedPnl < -totalBalance * 0.05 ? "总浮亏较大，建议调整仓位管理" : null
-                        ].filter(Boolean)
-                    }
+                            marginUsageRatio > 70 ? '保证金使用率较高，建议降低仓位或增加资金' : null,
+                            riskPositions.length > positions.length * 0.6 ? '亏损仓位较多，建议检查止损策略' : null,
+                            totalUnrealizedPnl < -totalBalance * 0.05 ? '总浮亏较大，建议调整仓位管理' : null,
+                        ].filter(Boolean),
+                    },
                 };
             case 'binance_compare_spot_futures_price':
                 const spotSymbol = `${args.symbol}USDT`;
                 const futuresSymbol = `${args.symbol}USDT`;
                 const [spotPrice, futuresPrice] = await Promise.all([
                     spotAPI.getPrice(spotSymbol),
-                    futuresAPI.getPrice(futuresSymbol)
+                    futuresAPI.getPrice(futuresSymbol),
                 ]);
                 const spot = parseFloat(spotPrice.price);
                 const futures = parseFloat(futuresPrice.price);
@@ -750,9 +750,9 @@ export async function handleAdvancedTool(name, args, binanceClient) {
                         analysis: {
                             premium: diffPercent > 0 ? '合约溢价' : '合约贴水',
                             significance: Math.abs(diffPercent) > 1 ? 'SIGNIFICANT' : 'NORMAL',
-                            timestamp: Date.now()
-                        }
-                    }
+                            timestamp: Date.now(),
+                        },
+                    },
                 };
             default:
                 throw new Error(`未知的高级工具: ${name}`);
@@ -762,7 +762,7 @@ export async function handleAdvancedTool(name, args, binanceClient) {
         logger.error(`高级工具执行失败 ${name}:`, error);
         return {
             success: false,
-            error: error instanceof Error ? error.message : '未知错误'
+            error: error instanceof Error ? error.message : '未知错误',
         };
     }
 }

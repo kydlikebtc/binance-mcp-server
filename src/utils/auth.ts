@@ -1,7 +1,7 @@
 /**
  * Authorization Token 处理工具
  * 用于在HTTP MCP模式下解析Binance API配置
- * 格式: {apiKey}.{apiSecret}
+ * 格式: {apiKey}:{apiSecret}
  */
 
 export interface BinanceCredentials {
@@ -12,29 +12,29 @@ export interface BinanceCredentials {
 export class AuthTokenHandler {
   /**
    * 从authorization token解析Binance凭据
-   * 格式: {apiKey}.{apiSecret}
+   * 格式: {apiKey}:{apiSecret}
    */
   static parseCredentials(token: string): BinanceCredentials | null {
     try {
       // 移除可能的Bearer前缀
       const cleanToken = token.replace(/^Bearer\s+/i, '');
-      
-      // 解析格式: apiKey.apiSecret
-      const parts = cleanToken.split('.');
+
+      // 解析格式: apiKey:apiSecret
+      const parts = cleanToken.split(':');
       if (parts.length !== 2) {
         return null;
       }
-      
+
       const [apiKey, apiSecret] = parts;
-      
+
       // 验证必要字段
       if (!apiKey || !apiSecret || apiKey.length < 10 || apiSecret.length < 10) {
         return null;
       }
-      
+
       return {
         apiKey: apiKey.trim(),
-        apiSecret: apiSecret.trim()
+        apiSecret: apiSecret.trim(),
       };
     } catch (error) {
       return null;
@@ -45,7 +45,7 @@ export class AuthTokenHandler {
    * 生成token格式示例
    */
   static generateToken(apiKey: string, apiSecret: string): string {
-    return `${apiKey}.${apiSecret}`;
+    return `${apiKey}:${apiSecret}`;
   }
 
   /**
@@ -61,14 +61,14 @@ export class AuthTokenHandler {
  */
 export function generateClaudeDesktopConfig(apiKey: string, apiSecret: string): object {
   const token = AuthTokenHandler.generateToken(apiKey, apiSecret);
-  
+
   return {
-    "mcpServers": {
-      "binance-mcp-server": {
-        "command": "sse",
-        "args": ["http://your-server:3000/message"],
-        "authorization_token": token
-      }
-    }
+    mcpServers: {
+      'binance-mcp-server': {
+        command: 'sse',
+        args: ['http://your-server:3000/message'],
+        authorization_token: token,
+      },
+    },
   };
 }

@@ -1,7 +1,7 @@
 /**
  * Authorization Token 处理工具
  * 用于在HTTP MCP模式下解析Binance API配置
- * 格式: {apiKey}.{apiSecret}
+ * 格式: {apiKey}:{apiSecret}
  */
 export interface BinanceCredentials {
     apiKey: string;
@@ -10,7 +10,7 @@ export interface BinanceCredentials {
 export declare class AuthTokenHandler {
     /**
      * 从authorization token解析Binance凭据
-     * 格式: {apiKey}.{apiSecret}
+     * 格式: {apiKey}:{apiSecret}
      */
     static parseCredentials(token: string): BinanceCredentials | null;
     /**

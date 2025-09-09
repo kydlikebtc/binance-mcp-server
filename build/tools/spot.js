@@ -62,7 +62,7 @@ export function createSpotTools(binanceClient) {
 • 常用交易对：BTCUSDT、ETHUSDT、BNBBUSD、ADAUSDT
 • 区分大小写，必须完全匹配Binance支持的交易对
 • 可通过binance_exchange_info工具查看完整列表`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD', 'ADAUSDT', 'DOTUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD', 'ADAUSDT', 'DOTUSDT'],
                     },
                     side: {
                         type: 'string',
@@ -72,11 +72,19 @@ export function createSpotTools(binanceClient) {
 • BUY：买入基础资产（用计价币购买基础币）
   例如：用USDT买入BTC
 • SELL：卖出基础资产（卖出基础币获得计价币）
-  例如：卖出BTC获得USDT`
+  例如：卖出BTC获得USDT`,
                     },
                     type: {
                         type: 'string',
-                        enum: ['MARKET', 'LIMIT', 'STOP_LOSS', 'STOP_LOSS_LIMIT', 'TAKE_PROFIT', 'TAKE_PROFIT_LIMIT', 'LIMIT_MAKER'],
+                        enum: [
+                            'MARKET',
+                            'LIMIT',
+                            'STOP_LOSS',
+                            'STOP_LOSS_LIMIT',
+                            'TAKE_PROFIT',
+                            'TAKE_PROFIT_LIMIT',
+                            'LIMIT_MAKER',
+                        ],
                         description: `订单类型（必填）
             
 • MARKET：市价单，立即按当前市场价格成交
@@ -87,7 +95,7 @@ export function createSpotTools(binanceClient) {
 • TAKE_PROFIT_LIMIT：限价止盈单，价格触发后按限价成交
 • LIMIT_MAKER：只做挂单方限价单，保证不会立即成交
 
-💡 新手建议：从MARKET（市价单）或LIMIT（限价单）开始`
+💡 新手建议：从MARKET（市价单）或LIMIT（限价单）开始`,
                     },
                     quantity: {
                         type: 'number',
@@ -102,7 +110,7 @@ export function createSpotTools(binanceClient) {
 💡 示例：
 - BTCUSDT最小0.00001 BTC
 - ETHUSDT最小0.0001 ETH`,
-                        minimum: 0.00000001
+                        minimum: 0.00000001,
                     },
                     price: {
                         type: 'number',
@@ -117,7 +125,7 @@ export function createSpotTools(binanceClient) {
 💡 定价建议：
 - 买单价格略高于当前价：更容易成交
 - 卖单价格略低于当前价：更容易成交`,
-                        minimum: 0.00000001
+                        minimum: 0.00000001,
                     },
                     timeInForce: {
                         type: 'string',
@@ -131,7 +139,7 @@ export function createSpotTools(binanceClient) {
 💡 使用建议：
 - 普通交易：使用GTC
 - 快速成交：使用IOC
-- 全部成交：使用FOK`
+- 全部成交：使用FOK`,
                     },
                     stopPrice: {
                         type: 'number',
@@ -145,11 +153,11 @@ export function createSpotTools(binanceClient) {
 💡 设置建议：
 - 止损幅度：5-10%较为常见  
 - 止盈幅度：根据风险偏好设定`,
-                        minimum: 0.00000001
-                    }
+                        minimum: 0.00000001,
+                    },
                 },
-                required: ['symbol', 'side', 'type', 'quantity']
-            }
+                required: ['symbol', 'side', 'type', 'quantity'],
+            },
         },
         {
             name: 'binance_spot_cancel_order',
@@ -211,7 +219,7 @@ export function createSpotTools(binanceClient) {
 💡 注意事项：
 - 交易对拼写必须精确匹配
 - 建议先查询委托订单确认交易对`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
                     },
                     orderId: {
                         type: 'number',
@@ -227,11 +235,11 @@ export function createSpotTools(binanceClient) {
 💡 获取方式：
 - 优先使用下单返回的orderId
 - 批量撤销可先查询委托订单列表`,
-                        minimum: 1
-                    }
+                        minimum: 1,
+                    },
                 },
-                required: ['symbol', 'orderId']
-            }
+                required: ['symbol', 'orderId'],
+            },
         },
         {
             name: 'binance_spot_open_orders',
@@ -309,11 +317,11 @@ export function createSpotTools(binanceClient) {
 - 查看特定交易对：填写symbol参数
 - 查看全部委托：不填写任何参数
 - 数量较多时建议分交易对查询`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
-                    }
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
+                    },
                 },
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_spot_order_history',
@@ -393,7 +401,7 @@ export function createSpotTools(binanceClient) {
 💡 查询技巧：
 - 优先查询近期活跃的交易对
 - 不同交易对需要分别查询`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
                     },
                     orderId: {
                         type: 'number',
@@ -407,7 +415,7 @@ export function createSpotTools(binanceClient) {
 💡 分页使用：
 - 首次查询不填写，获取最新订单
 - 后续查询使用上次结果的最小orderId`,
-                        minimum: 1
+                        minimum: 1,
                     },
                     startTime: {
                         type: 'number',
@@ -421,7 +429,7 @@ export function createSpotTools(binanceClient) {
 💡 时间设置：
 - 使用 Date.now() 获取当前时间戳
 - 建议查询最近几小时的数据`,
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     endTime: {
                         type: 'number',
@@ -435,7 +443,7 @@ export function createSpotTools(binanceClient) {
 💡 注意事项：
 - endTime - startTime ≤ 24小时
 - 建议留出时间缓冲，避免刚好24小时`,
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     limit: {
                         type: 'number',
@@ -451,11 +459,11 @@ export function createSpotTools(binanceClient) {
 - 批量获取：使用500-1000
 - 网络较慢时建议使用小值`,
                         minimum: 1,
-                        maximum: 1000
-                    }
+                        maximum: 1000,
+                    },
                 },
-                required: ['symbol']
-            }
+                required: ['symbol'],
+            },
         },
         {
             name: 'binance_spot_trade_history',
@@ -541,7 +549,7 @@ export function createSpotTools(binanceClient) {
 💡 查询技巧：
 - 先通过订单历史确认有成交记录
 - 按交易对分别查询，便于分析`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
                     },
                     startTime: {
                         type: 'number',
@@ -555,7 +563,7 @@ export function createSpotTools(binanceClient) {
 💡 时间设置：
 - 建议查询最近几小时的数据
 - 可使用 Date.now() 获取当前时间戳`,
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     endTime: {
                         type: 'number',
@@ -569,7 +577,7 @@ export function createSpotTools(binanceClient) {
 💡 注意事项：
 - 时间跨度控制在24小时内
 - 预留时间缓冲避免边界问题`,
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     fromId: {
                         type: 'number',
@@ -583,7 +591,7 @@ export function createSpotTools(binanceClient) {
 💡 分页使用：
 - 首次查询不填写
 - 后续查询使用上次结果的最小交易ID`,
-                        minimum: 1
+                        minimum: 1,
                     },
                     limit: {
                         type: 'number',
@@ -599,11 +607,11 @@ export function createSpotTools(binanceClient) {
 - 常规查询：200-500  
 - 批量导出：500-1000`,
                         minimum: 1,
-                        maximum: 1000
-                    }
+                        maximum: 1000,
+                    },
                 },
-                required: ['symbol']
-            }
+                required: ['symbol'],
+            },
         },
         {
             name: 'binance_spot_cancel_all_orders',
@@ -696,12 +704,12 @@ export function createSpotTools(binanceClient) {
 💡 安全建议：
 - 紧急情况下使用
 - 操作前备份重要订单信息`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
-                    }
+                        examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
+                    },
                 },
-                required: ['symbol']
-            }
-        }
+                required: ['symbol'],
+            },
+        },
     ];
 }
 export async function handleSpotTool(name, args, binanceClient) {
@@ -715,12 +723,12 @@ export async function handleSpotTool(name, args, binanceClient) {
                     side: { required: true, type: 'side' },
                     type: { required: true, type: 'orderType' },
                     quantity: { required: true, type: 'quantity' },
-                    price: { required: args.type !== 'MARKET', type: 'price' }
+                    price: { required: args.type !== 'MARKET', type: 'price' },
                 });
                 if (!orderValidation.valid) {
                     return {
                         success: false,
-                        error: ParameterValidator.formatValidationError(orderValidation)
+                        error: ParameterValidator.formatValidationError(orderValidation),
                     };
                 }
                 const validatedArgs = orderValidation.data;
@@ -733,7 +741,7 @@ export async function handleSpotTool(name, args, binanceClient) {
                         quantity: validatedArgs.quantity,
                         price: validatedArgs.price,
                         timeInForce: args.timeInForce || 'GTC',
-                        stopPrice: args.stopPrice
+                        stopPrice: args.stopPrice,
                     });
                     let result = ResultFormatter.formatSpotOrderSuccess({
                         orderId: order.orderId,
@@ -745,7 +753,7 @@ export async function handleSpotTool(name, args, binanceClient) {
                         cummulativeQuoteQty: order.cummulativeQuoteQty,
                         price: order.price,
                         status: order.status,
-                        transactTime: order.updateTime || order.transactTime || Date.now()
+                        transactTime: order.updateTime || order.transactTime || Date.now(),
                     });
                     // 添加警告信息
                     if (warnings && warnings.length > 0) {
@@ -753,13 +761,13 @@ export async function handleSpotTool(name, args, binanceClient) {
                     }
                     return {
                         success: true,
-                        data: result
+                        data: result,
                     };
                 }
                 catch (apiError) {
                     return {
                         success: false,
-                        error: `下单失败: ${apiError instanceof Error ? apiError.message : '未知错误'}\n\n💡 常见解决方案:\n• 检查账户余额是否充足\n• 验证价格和数量精度是否正确\n• 确认交易对是否存在且可交易\n• 检查网络连接和API权限`
+                        error: `下单失败: ${apiError instanceof Error ? apiError.message : '未知错误'}\n\n💡 常见解决方案:\n• 检查账户余额是否充足\n• 验证价格和数量精度是否正确\n• 确认交易对是否存在且可交易\n• 检查网络连接和API权限`,
                     };
                 }
             case 'binance_spot_cancel_order':
@@ -773,14 +781,14 @@ export async function handleSpotTool(name, args, binanceClient) {
                         status: cancelledOrder.status,
                         origQty: parseFloat(cancelledOrder.origQty),
                         executedQty: parseFloat(cancelledOrder.executedQty),
-                        price: cancelledOrder.price ? parseFloat(cancelledOrder.price) : null
-                    }
+                        price: cancelledOrder.price ? parseFloat(cancelledOrder.price) : null,
+                    },
                 };
             case 'binance_spot_open_orders':
                 const openOrders = await spotAPI.getOpenOrders(args.symbol);
                 return {
                     success: true,
-                    data: openOrders.map(order => ({
+                    data: openOrders.map((order) => ({
                         orderId: order.orderId,
                         clientOrderId: order.clientOrderId,
                         symbol: order.symbol,
@@ -791,8 +799,8 @@ export async function handleSpotTool(name, args, binanceClient) {
                         executedQty: parseFloat(order.executedQty),
                         status: order.status,
                         timeInForce: order.timeInForce,
-                        workingTime: order.workingTime
-                    }))
+                        workingTime: order.workingTime,
+                    })),
                 };
             case 'binance_spot_order_history':
                 const orderHistory = await spotAPI.getOrderHistory({
@@ -800,11 +808,11 @@ export async function handleSpotTool(name, args, binanceClient) {
                     orderId: args.orderId,
                     startTime: args.startTime,
                     endTime: args.endTime,
-                    limit: args.limit
+                    limit: args.limit,
                 });
                 return {
                     success: true,
-                    data: orderHistory.map(order => ({
+                    data: orderHistory.map((order) => ({
                         orderId: order.orderId,
                         clientOrderId: order.clientOrderId,
                         symbol: order.symbol,
@@ -816,8 +824,8 @@ export async function handleSpotTool(name, args, binanceClient) {
                         cummulativeQuoteQty: parseFloat(order.cummulativeQuoteQty),
                         status: order.status,
                         timeInForce: order.timeInForce,
-                        workingTime: order.workingTime
-                    }))
+                        workingTime: order.workingTime,
+                    })),
                 };
             case 'binance_spot_trade_history':
                 const trades = await spotAPI.getTrades({
@@ -825,11 +833,11 @@ export async function handleSpotTool(name, args, binanceClient) {
                     startTime: args.startTime,
                     endTime: args.endTime,
                     fromId: args.fromId,
-                    limit: args.limit
+                    limit: args.limit,
                 });
                 return {
                     success: true,
-                    data: trades.map(trade => ({
+                    data: trades.map((trade) => ({
                         id: trade.id,
                         orderId: trade.orderId,
                         symbol: trade.symbol,
@@ -840,8 +848,8 @@ export async function handleSpotTool(name, args, binanceClient) {
                         commissionAsset: trade.commissionAsset,
                         time: trade.time,
                         isBuyer: trade.isBuyer,
-                        isMaker: trade.isMaker
-                    }))
+                        isMaker: trade.isMaker,
+                    })),
                 };
             case 'binance_spot_cancel_all_orders':
                 const openOrdersToCancel = await spotAPI.getOpenOrders(args.symbol);
@@ -852,7 +860,7 @@ export async function handleSpotTool(name, args, binanceClient) {
                         cancelResults.push({
                             orderId: cancelled.orderId,
                             status: 'CANCELLED',
-                            success: true
+                            success: true,
                         });
                     }
                     catch (error) {
@@ -860,7 +868,7 @@ export async function handleSpotTool(name, args, binanceClient) {
                             orderId: order.orderId,
                             status: 'FAILED',
                             success: false,
-                            error: error instanceof Error ? error.message : '取消失败'
+                            error: error instanceof Error ? error.message : '取消失败',
                         });
                     }
                 }
@@ -868,10 +876,10 @@ export async function handleSpotTool(name, args, binanceClient) {
                     success: true,
                     data: {
                         totalOrders: openOrdersToCancel.length,
-                        cancelled: cancelResults.filter(r => r.success).length,
-                        failed: cancelResults.filter(r => !r.success).length,
-                        results: cancelResults
-                    }
+                        cancelled: cancelResults.filter((r) => r.success).length,
+                        failed: cancelResults.filter((r) => !r.success).length,
+                        results: cancelResults,
+                    },
                 };
             default:
                 throw new Error(`未知的现货交易工具: ${name}`);
@@ -881,7 +889,7 @@ export async function handleSpotTool(name, args, binanceClient) {
         logger.error(`现货交易工具执行失败 ${name}:`, error);
         return {
             success: false,
-            error: error instanceof Error ? error.message : '未知错误'
+            error: error instanceof Error ? error.message : '未知错误',
         };
     }
 }

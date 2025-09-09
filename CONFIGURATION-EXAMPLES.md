@@ -24,6 +24,7 @@
 ```
 
 **特点**:
+
 - ✅ 使用测试网，100%安全
 - ✅ 适中的日志级别
 - ✅ 简单配置，易于上手
@@ -36,7 +37,7 @@
 {
   "mcpServers": {
     "binance-mcp-server": {
-      "command": "node", 
+      "command": "node",
       "args": ["/Users/yourname/binance-mcp-server/build/index.js"],
       "env": {
         "BINANCE_API_KEY": "your_mainnet_api_key",
@@ -50,6 +51,7 @@
 ```
 
 **特点**:
+
 - ⚠️ 真实交易环境
 - 📊 较少的日志输出
 - 🔒 需要严格的安全配置
@@ -66,7 +68,7 @@
       "args": ["/Users/yourname/binance-mcp-server/build/index.js"],
       "env": {
         "BINANCE_API_KEY": "your_testnet_api_key",
-        "BINANCE_SECRET_KEY": "your_testnet_secret_key", 
+        "BINANCE_SECRET_KEY": "your_testnet_secret_key",
         "BINANCE_TESTNET": "true",
         "LOG_LEVEL": "debug",
         "NODE_ENV": "development"
@@ -77,6 +79,7 @@
 ```
 
 **特点**:
+
 - 🔍 详细调试信息
 - 🛠️ 开发环境优化
 - 📝 完整错误追踪
@@ -94,7 +97,7 @@
       "env": {
         "BINANCE_API_KEY": "your_mainnet_api_key",
         "BINANCE_SECRET_KEY": "your_mainnet_secret_key",
-        "BINANCE_TESTNET": "false", 
+        "BINANCE_TESTNET": "false",
         "LOG_LEVEL": "info",
         "SERVER_MODE": "stdio"
       }
@@ -104,22 +107,24 @@
 ```
 
 **特点**:
+
 - 🚀 生产环境，完整功能
 - ⚡ 优化的性能设置
 - 📊 平衡的日志记录
 
-### 5. 远程HTTP部署配置
+### 5. 远程 HTTP 部署配置
 
 **适用场景**: 云服务器部署，多人共享
 
 #### 服务器端配置 (docker-compose.yml)
+
 ```yaml
 version: '3.8'
 services:
   binance-mcp-server:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - SERVER_MODE=http
       - PORT=3000
@@ -128,13 +133,14 @@ services:
       # API密钥通过环境变量或secrets管理
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/message"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/message']
       interval: 30s
       timeout: 10s
       retries: 3
 ```
 
 #### 客户端配置 (Claude Desktop)
+
 ```json
 {
   "mcpServers": {
@@ -175,6 +181,7 @@ services:
 ```
 
 **验证配置**:
+
 ```bash
 # 检查配置文件语法
 cat ~/Library/Application\ Support/Claude/claude_desktop_config.json | python -m json.tool
@@ -205,6 +212,7 @@ ls -la "/Users/yourname/Projects/binance-mcp-server/build/index.js"
 ```
 
 **验证配置**:
+
 ```cmd
 # 检查配置文件语法 (需要安装Python)
 python -m json.tool %APPDATA%\Claude\claude_desktop_config.json
@@ -236,9 +244,10 @@ dir "C:\Users\YourName\binance-mcp-server\build\index.js"
 
 ## 🔐 安全配置最佳实践
 
-### 1. API密钥安全等级分类
+### 1. API 密钥安全等级分类
 
 #### 🟢 测试级 (最安全)
+
 ```json
 {
   "env": {
@@ -248,9 +257,11 @@ dir "C:\Users\YourName\binance-mcp-server\build\index.js"
   }
 }
 ```
+
 **适用**: 学习、测试、开发
 
-#### 🟡 交易级 (中等安全)  
+#### 🟡 交易级 (中等安全)
+
 ```json
 {
   "env": {
@@ -260,13 +271,16 @@ dir "C:\Users\YourName\binance-mcp-server\build\index.js"
   }
 }
 ```
-**权限要求**: 
+
+**权限要求**:
+
 - ✅ 现货交易
-- ✅ 合约交易  
+- ✅ 合约交易
 - ✅ 读取权限
 - ❌ 提现权限 (禁用)
 
 #### 🔴 高风险级 (不推荐)
+
 ```json
 {
   "env": {
@@ -276,17 +290,20 @@ dir "C:\Users\YourName\binance-mcp-server\build\index.js"
   }
 }
 ```
+
 **包含**: 提现权限 - **强烈不推荐**
 
 ### 2. 网络安全配置
 
-#### IP白名单设置 (推荐)
+#### IP 白名单设置 (推荐)
+
 ```
 Binance API管理 → 编辑API → IP访问限制
 添加固定IP: 123.456.789.123
 ```
 
-#### 动态IP处理
+#### 动态 IP 处理
+
 ```bash
 # 获取当前IP的脚本
 curl -4 ifconfig.me
@@ -298,9 +315,10 @@ curl -4 ifconfig.me
 ### 3. 权限最小化原则
 
 **推荐权限配置**:
+
 ```
 ✅ 现货及杠杆交易 - 必需
-✅ 合约交易 - 必需  
+✅ 合约交易 - 必需
 ✅ 统一账户 - 必需
 ✅ 读取权限 - 必需
 ❌ 提现权限 - 禁用
@@ -335,12 +353,8 @@ curl -4 ifconfig.me
 {
   "mcpServers": {
     "binance-mcp-server": {
-      "command": "node", 
-      "args": [
-        "--max-old-space-size=1024",
-        "--gc-interval=100", 
-        "/path/to/build/index.js"
-      ],
+      "command": "node",
+      "args": ["--max-old-space-size=1024", "--gc-interval=100", "/path/to/build/index.js"],
       "env": {
         "NODE_ENV": "production",
         "LOG_LEVEL": "error"
@@ -375,6 +389,7 @@ curl -4 ifconfig.me
 ### 2. 常见问题诊断
 
 #### 问题：路径错误
+
 ```bash
 # 检查文件是否存在
 ls -la "/path/to/binance-mcp-server/build/index.js"
@@ -383,7 +398,8 @@ ls -la "/path/to/binance-mcp-server/build/index.js"
 stat "/path/to/binance-mcp-server/build/index.js"
 ```
 
-#### 问题：Node.js版本
+#### 问题：Node.js 版本
+
 ```bash
 # 检查Node.js版本 (需要 >= 18)
 node --version
@@ -393,6 +409,7 @@ npm --version
 ```
 
 #### 问题：依赖缺失
+
 ```bash
 # 重新安装依赖
 cd /path/to/binance-mcp-server
@@ -406,6 +423,7 @@ npm run build
 ### 1. 环境变量文件
 
 创建 `.env` 文件（仅开发环境）:
+
 ```bash
 # .env
 BINANCE_API_KEY=your_api_key
@@ -414,11 +432,12 @@ BINANCE_TESTNET=true
 LOG_LEVEL=debug
 ```
 
-**注意**: ⚠️ 生产环境不要使用.env文件，直接在Claude Desktop配置中设置
+**注意**: ⚠️ 生产环境不要使用.env 文件，直接在 Claude Desktop 配置中设置
 
 ### 2. 多环境配置管理
 
 #### development.json
+
 ```json
 {
   "mcpServers": {
@@ -435,11 +454,12 @@ LOG_LEVEL=debug
 ```
 
 #### production.json
+
 ```json
 {
   "mcpServers": {
     "binance-prod": {
-      "command": "node", 
+      "command": "node",
       "args": ["/path/to/build/index.js"],
       "env": {
         "BINANCE_TESTNET": "false",
@@ -512,6 +532,7 @@ echo "✅ 配置验证通过"
 ### 2. 日志查看方法
 
 #### macOS
+
 ```bash
 # Console应用查看
 open /Applications/Utilities/Console.app
@@ -521,12 +542,14 @@ log stream --predicate 'process == "Claude"' --level debug
 ```
 
 #### Windows
+
 ```
 事件查看器 → Windows日志 → 应用程序
 筛选: 来源 = Claude Desktop
 ```
 
 #### Linux
+
 ```bash
 # 查看系统日志
 journalctl -u claude-desktop
@@ -537,12 +560,13 @@ journalctl -u claude-desktop
 ## 📞 获取配置支持
 
 - **配置模板**: 参考上述示例直接复制修改
-- **路径问题**: 使用绝对路径，避免~或环境变量  
-- **权限问题**: 确保API密钥权限正确配置
+- **路径问题**: 使用绝对路径，避免~或环境变量
+- **权限问题**: 确保 API 密钥权限正确配置
 - **网络问题**: 检查防火墙和代理设置
 
-**重要提醒**: 
-- 🔒 永远不要在公开场合分享真实的API密钥
+**重要提醒**:
+
+- 🔒 永远不要在公开场合分享真实的 API 密钥
 - 🧪 新功能先在测试网验证
-- 📱 启用2FA提高账户安全性
-- 🔄 定期更换API密钥
+- 📱 启用 2FA 提高账户安全性
+- 🔄 定期更换 API 密钥

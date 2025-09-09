@@ -69,8 +69,8 @@ API使用：活跃状态
             inputSchema: {
                 type: 'object',
                 properties: {},
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_spot_balances',
@@ -141,8 +141,8 @@ API使用：活跃状态
             inputSchema: {
                 type: 'object',
                 properties: {},
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_portfolio_account',
@@ -226,8 +226,8 @@ API使用：活跃状态
             inputSchema: {
                 type: 'object',
                 properties: {},
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_futures_positions',
@@ -322,11 +322,11 @@ API使用：活跃状态
                     symbol: {
                         type: 'string',
                         description: '指定查询的交易对，如"BTCUSDT"、"ETHUSDT"。不填则返回所有有持仓的合约。支持USDT永续、币本位合约等。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
-                    }
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
+                    },
                 },
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_account_status',
@@ -402,9 +402,9 @@ IP限制：✅ 已配置白名单
             inputSchema: {
                 type: 'object',
                 properties: {},
-                required: []
-            }
-        }
+                required: [],
+            },
+        },
     ];
 }
 export async function handleAccountTool(name, args, binanceClient) {
@@ -423,20 +423,22 @@ export async function handleAccountTool(name, args, binanceClient) {
                         canDeposit: accountInfo.canDeposit,
                         updateTime: accountInfo.updateTime,
                         permissions: accountInfo.permissions,
-                        balanceCount: accountInfo.balances.length
-                    }
+                        balanceCount: accountInfo.balances.length,
+                    },
                 };
             case 'binance_spot_balances':
                 const balances = await spotAPI.getBalances();
-                const formattedBalances = balances.map(balance => ({
+                const formattedBalances = balances
+                    .map((balance) => ({
                     asset: balance.asset,
                     free: parseFloat(balance.free),
                     locked: parseFloat(balance.locked),
-                    total: parseFloat(balance.free) + parseFloat(balance.locked)
-                })).filter(balance => balance.total > 0);
+                    total: parseFloat(balance.free) + parseFloat(balance.locked),
+                }))
+                    .filter((balance) => balance.total > 0);
                 return {
                     success: true,
-                    data: ResultFormatter.formatSpotBalances(formattedBalances)
+                    data: ResultFormatter.formatSpotBalances(formattedBalances),
                 };
             case 'binance_portfolio_account':
                 const portfolioAccount = await futuresAPI.getPortfolioAccount();
@@ -450,7 +452,8 @@ export async function handleAccountTool(name, args, binanceClient) {
                         totalCrossUnPnl: parseFloat(portfolioAccount.totalCrossUnPnl),
                         availableBalance: parseFloat(portfolioAccount.availableBalance),
                         maxWithdrawAmount: parseFloat(portfolioAccount.maxWithdrawAmount),
-                        assets: portfolioAccount.assets?.map(asset => ({
+                        assets: portfolioAccount.assets
+                            ?.map((asset) => ({
                             asset: asset.asset,
                             walletBalance: parseFloat(asset.walletBalance),
                             unrealizedProfit: parseFloat(asset.unrealizedProfit),
@@ -459,9 +462,10 @@ export async function handleAccountTool(name, args, binanceClient) {
                             initialMargin: parseFloat(asset.initialMargin),
                             positionInitialMargin: parseFloat(asset.positionInitialMargin),
                             openOrderInitialMargin: parseFloat(asset.openOrderInitialMargin),
-                            maxWithdrawAmount: parseFloat(asset.maxWithdrawAmount)
-                        })).filter(asset => asset.walletBalance > 0) || []
-                    }
+                            maxWithdrawAmount: parseFloat(asset.maxWithdrawAmount),
+                        }))
+                            .filter((asset) => asset.walletBalance > 0) || [],
+                    },
                 };
             case 'binance_futures_positions':
                 // 验证symbol参数（如果提供）
@@ -471,13 +475,13 @@ export async function handleAccountTool(name, args, binanceClient) {
                     if (!symbolValidation.valid) {
                         return {
                             success: false,
-                            error: ParameterValidator.formatValidationError(symbolValidation)
+                            error: ParameterValidator.formatValidationError(symbolValidation),
                         };
                     }
                     validatedSymbol = symbolValidation.data;
                 }
                 const positions = await futuresAPI.getPositions(validatedSymbol);
-                const formattedPositions = positions.map(position => ({
+                const formattedPositions = positions.map((position) => ({
                     symbol: position.symbol,
                     positionAmt: parseFloat(position.positionAmt),
                     entryPrice: parseFloat(position.entryPrice),
@@ -487,16 +491,16 @@ export async function handleAccountTool(name, args, binanceClient) {
                     leverage: parseFloat(position.leverage),
                     marginType: position.marginType,
                     positionSide: position.positionSide,
-                    notional: parseFloat(position.positionAmt) * parseFloat(position.markPrice)
+                    notional: parseFloat(position.positionAmt) * parseFloat(position.markPrice),
                 }));
                 return {
                     success: true,
-                    data: ResultFormatter.formatFuturesPositions(formattedPositions)
+                    data: ResultFormatter.formatFuturesPositions(formattedPositions),
                 };
             case 'binance_account_status':
                 const [connectivity, serverTime] = await Promise.all([
                     binanceClient.testConnectivity(),
-                    binanceClient.getServerTime()
+                    binanceClient.getServerTime(),
                 ]);
                 return {
                     success: true,
@@ -505,8 +509,8 @@ export async function handleAccountTool(name, args, binanceClient) {
                         serverTime: serverTime,
                         localTime: Date.now(),
                         timeDifference: Date.now() - serverTime,
-                        testnet: binanceClient.isTestnet()
-                    }
+                        testnet: binanceClient.isTestnet(),
+                    },
                 };
             default:
                 throw new Error(`未知的账户工具: ${name}`);
@@ -516,7 +520,7 @@ export async function handleAccountTool(name, args, binanceClient) {
         logger.error(`账户工具执行失败 ${name}:`, error);
         return {
             success: false,
-            error: error instanceof Error ? error.message : '未知错误'
+            error: error instanceof Error ? error.message : '未知错误',
         };
     }
 }

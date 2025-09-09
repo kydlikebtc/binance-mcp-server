@@ -81,7 +81,7 @@ export function createFuturesTools(binanceClient) {
 💡 合约选择：
 - 新手推荐：USDT永续合约（如BTCUSDT）
 - 高级用户：币本位合约（如BTCUSD_PERP）`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'BTCUSD_PERP', 'ETHUSD_PERP']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'BTCUSD_PERP', 'ETHUSD_PERP'],
                     },
                     side: {
                         type: 'string',
@@ -97,7 +97,7 @@ export function createFuturesTools(binanceClient) {
 
 💡 方向选择：
 - 看涨：选择BUY开多仓
-- 看跌：选择SELL开空仓`
+- 看跌：选择SELL开空仓`,
                     },
                     positionSide: {
                         type: 'string',
@@ -114,7 +114,7 @@ export function createFuturesTools(binanceClient) {
 
 💡 模式建议：
 - 新手：使用BOTH模式
-- 对冲需求：使用LONG/SHORT模式`
+- 对冲需求：使用LONG/SHORT模式`,
                     },
                     type: {
                         type: 'string',
@@ -131,7 +131,7 @@ export function createFuturesTools(binanceClient) {
 💡 类型选择：
 - 快速成交：MARKET
 - 精确价格：LIMIT
-- 风险管理：STOP/TAKE_PROFIT`
+- 风险管理：STOP/TAKE_PROFIT`,
                     },
                     quantity: {
                         type: 'number',
@@ -146,7 +146,7 @@ export function createFuturesTools(binanceClient) {
 - BTCUSDT最小：0.001 BTC
 - ETHUSDT最小：0.001 ETH
 - 注意区分张数和价值`,
-                        minimum: 0.001
+                        minimum: 0.001,
                     },
                     price: {
                         type: 'number',
@@ -161,7 +161,7 @@ export function createFuturesTools(binanceClient) {
 - 开多：价格略高于当前价更易成交
 - 开空：价格略低于当前价更易成交
 - 止损：设置合理的风险承受范围`,
-                        minimum: 0.01
+                        minimum: 0.01,
                     },
                     timeInForce: {
                         type: 'string',
@@ -176,7 +176,7 @@ export function createFuturesTools(binanceClient) {
 💡 选择建议：
 - 普通交易：GTC
 - 快速成交：IOC
-- 全部成交：FOK`
+- 全部成交：FOK`,
                     },
                     reduceOnly: {
                         type: 'boolean',
@@ -189,7 +189,7 @@ export function createFuturesTools(binanceClient) {
 
 💡 使用场景：
 - 平仓操作：设为true
-- 开仓操作：设为false`
+- 开仓操作：设为false`,
                     },
                     stopPrice: {
                         type: 'number',
@@ -203,7 +203,7 @@ export function createFuturesTools(binanceClient) {
 💡 设置建议：
 - 止损：3-5%的价格回撤
 - 止盈：根据风险收益比设定`,
-                        minimum: 0.01
+                        minimum: 0.01,
                     },
                     closePosition: {
                         type: 'boolean',
@@ -216,11 +216,11 @@ export function createFuturesTools(binanceClient) {
 
 💡 使用场景：
 - 紧急平仓：设为true
-- 部分平仓：设为false并指定quantity`
-                    }
+- 部分平仓：设为false并指定quantity`,
+                    },
                 },
-                required: ['symbol', 'side', 'type', 'quantity']
-            }
+                required: ['symbol', 'side', 'type', 'quantity'],
+            },
         },
         {
             name: 'binance_futures_cancel_order',
@@ -282,7 +282,7 @@ export function createFuturesTools(binanceClient) {
 💡 注意事项：
 - 合约名称必须精确匹配
 - 建议先查询委托订单确认合约名称`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     orderId: {
                         type: 'number',
@@ -298,11 +298,11 @@ export function createFuturesTools(binanceClient) {
 💡 获取方式：
 - 优先使用下单返回的orderId
 - 批量撤销可先查询委托订单列表`,
-                        minimum: 1
-                    }
+                        minimum: 1,
+                    },
                 },
-                required: ['symbol', 'orderId']
-            }
+                required: ['symbol', 'orderId'],
+            },
         },
         {
             name: 'binance_futures_open_orders',
@@ -384,11 +384,11 @@ export function createFuturesTools(binanceClient) {
 - 查看特定合约：填写symbol参数
 - 查看全部委托：不填写任何参数
 - 数量较多时建议分合约查询`,
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
-                    }
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
+                    },
                 },
-                required: []
-            }
+                required: [],
+            },
         },
         {
             name: 'binance_futures_order_history',
@@ -451,32 +451,32 @@ export function createFuturesTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '必填。要查询的合约，如"BTCUSDT"。每次查询只能指定一个合约。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     orderId: {
                         type: 'number',
                         description: '指定订单ID，返回该订单ID及之后的订单。可用于分页查询。',
-                        minimum: 1
+                        minimum: 1,
                     },
                     startTime: {
                         type: 'number',
                         description: '查询开始时间，13位时间戳（毫秒）。与endTime配合使用，最大查询范围7天。',
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     endTime: {
                         type: 'number',
                         description: '查询结束时间，13位时间戳（毫秒）。必须大于startTime，最大查询范围7天。',
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     limit: {
                         type: 'number',
                         description: '返回订单数量限制。默认500，最大1000。',
                         minimum: 1,
-                        maximum: 1000
-                    }
+                        maximum: 1000,
+                    },
                 },
-                required: ['symbol']
-            }
+                required: ['symbol'],
+            },
         },
         {
             name: 'binance_futures_change_leverage',
@@ -538,17 +538,17 @@ export function createFuturesTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '要修改杠杆的合约，如"BTCUSDT"。每个合约的杠杆设置独立。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     leverage: {
                         type: 'number',
                         description: '杠杆倍数，范围1-125。具体最大值取决于合约和账户等级。高杠杆意味着高风险。',
                         minimum: 1,
-                        maximum: 125
-                    }
+                        maximum: 125,
+                    },
                 },
-                required: ['symbol', 'leverage']
-            }
+                required: ['symbol', 'leverage'],
+            },
         },
         {
             name: 'binance_futures_set_margin_type',
@@ -605,16 +605,16 @@ export function createFuturesTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '要设置保证金模式的合约，如"BTCUSDT"。每个合约的保证金模式独立设置。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     marginType: {
                         type: 'string',
                         enum: ['ISOLATED', 'CROSSED'],
-                        description: 'ISOLATED=逐仓模式（风险隔离，只用该合约的保证金），CROSSED=全仓模式（使用账户全部可用余额作为保证金）'
-                    }
+                        description: 'ISOLATED=逐仓模式（风险隔离，只用该合约的保证金），CROSSED=全仓模式（使用账户全部可用余额作为保证金）',
+                    },
                 },
-                required: ['symbol', 'marginType']
-            }
+                required: ['symbol', 'marginType'],
+            },
         },
         {
             name: 'binance_futures_trade_history',
@@ -695,32 +695,32 @@ export function createFuturesTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '必填。要查询的合约，如"BTCUSDT"。每次查询只能指定一个合约。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     startTime: {
                         type: 'number',
                         description: '查询开始时间，13位时间戳（毫秒）。与endTime配合使用，最大查询范围7天。',
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     endTime: {
                         type: 'number',
                         description: '查询结束时间，13位时间戳（毫秒）。必须大于startTime，最大查询范围7天。',
-                        minimum: 1000000000000
+                        minimum: 1000000000000,
                     },
                     fromId: {
                         type: 'number',
                         description: '从指定交易ID开始返回记录。可用于分页查询，获取该ID之后的交易记录。',
-                        minimum: 1
+                        minimum: 1,
                     },
                     limit: {
                         type: 'number',
                         description: '返回交易记录数量限制。默认500，最大1000。',
                         minimum: 1,
-                        maximum: 1000
-                    }
+                        maximum: 1000,
+                    },
                 },
-                required: ['symbol']
-            }
+                required: ['symbol'],
+            },
         },
         {
             name: 'binance_futures_cancel_all_orders',
@@ -791,11 +791,11 @@ export function createFuturesTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '必填。要取消订单的合约，如"BTCUSDT"。将取消该合约的所有委托订单。请谨慎操作。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
-                    }
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
+                    },
                 },
-                required: ['symbol']
-            }
+                required: ['symbol'],
+            },
         },
         {
             name: 'binance_futures_close_position',
@@ -864,17 +864,17 @@ export function createFuturesTools(binanceClient) {
                     symbol: {
                         type: 'string',
                         description: '必填。要平仓的合约，如"BTCUSDT"。将平掉该合约的持仓。',
-                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+                        examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
                     },
                     positionSide: {
                         type: 'string',
                         enum: ['BOTH', 'LONG', 'SHORT'],
-                        description: '指定平仓的方向：BOTH=所有持仓（默认），LONG=只平多头持仓，SHORT=只平空头持仓。用于双向持仓模式的精确控制。'
-                    }
+                        description: '指定平仓的方向：BOTH=所有持仓（默认），LONG=只平多头持仓，SHORT=只平空头持仓。用于双向持仓模式的精确控制。',
+                    },
                 },
-                required: ['symbol']
-            }
-        }
+                required: ['symbol'],
+            },
+        },
     ];
 }
 export async function handleFuturesTool(name, args, binanceClient) {
@@ -892,7 +892,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     timeInForce: args.timeInForce || 'GTC',
                     reduceOnly: args.reduceOnly,
                     stopPrice: args.stopPrice,
-                    closePosition: args.closePosition
+                    closePosition: args.closePosition,
                 });
                 return {
                     success: true,
@@ -912,8 +912,8 @@ export async function handleFuturesTool(name, args, binanceClient) {
                         reduceOnly: order.reduceOnly,
                         stopPrice: order.stopPrice ? parseFloat(order.stopPrice) : null,
                         time: order.time,
-                        updateTime: order.updateTime
-                    }
+                        updateTime: order.updateTime,
+                    },
                 };
             case 'binance_futures_cancel_order':
                 const cancelledOrder = await futuresAPI.cancelOrder(args.symbol, args.orderId);
@@ -928,14 +928,14 @@ export async function handleFuturesTool(name, args, binanceClient) {
                         origQty: parseFloat(cancelledOrder.origQty),
                         price: cancelledOrder.price ? parseFloat(cancelledOrder.price) : null,
                         executedQty: parseFloat(cancelledOrder.executedQty),
-                        status: cancelledOrder.status
-                    }
+                        status: cancelledOrder.status,
+                    },
                 };
             case 'binance_futures_open_orders':
                 const openOrders = await futuresAPI.getOpenOrders(args.symbol);
                 return {
                     success: true,
-                    data: openOrders.map(order => ({
+                    data: openOrders.map((order) => ({
                         orderId: order.orderId,
                         clientOrderId: order.clientOrderId,
                         symbol: order.symbol,
@@ -950,8 +950,8 @@ export async function handleFuturesTool(name, args, binanceClient) {
                         reduceOnly: order.reduceOnly,
                         stopPrice: order.stopPrice ? parseFloat(order.stopPrice) : null,
                         time: order.time,
-                        updateTime: order.updateTime
-                    }))
+                        updateTime: order.updateTime,
+                    })),
                 };
             case 'binance_futures_order_history':
                 const orderHistory = await futuresAPI.getOrderHistory({
@@ -959,11 +959,11 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     orderId: args.orderId,
                     startTime: args.startTime,
                     endTime: args.endTime,
-                    limit: args.limit
+                    limit: args.limit,
                 });
                 return {
                     success: true,
-                    data: orderHistory.map(order => ({
+                    data: orderHistory.map((order) => ({
                         orderId: order.orderId,
                         clientOrderId: order.clientOrderId,
                         symbol: order.symbol,
@@ -982,8 +982,8 @@ export async function handleFuturesTool(name, args, binanceClient) {
                         closePosition: order.closePosition,
                         stopPrice: order.stopPrice ? parseFloat(order.stopPrice) : null,
                         time: order.time,
-                        updateTime: order.updateTime
-                    }))
+                        updateTime: order.updateTime,
+                    })),
                 };
             case 'binance_futures_change_leverage':
                 const leverageResult = await futuresAPI.changeLeverage(args.symbol, args.leverage);
@@ -992,8 +992,8 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     data: {
                         symbol: leverageResult.symbol,
                         leverage: leverageResult.leverage,
-                        maxNotionalValue: leverageResult.maxNotionalValue
-                    }
+                        maxNotionalValue: leverageResult.maxNotionalValue,
+                    },
                 };
             case 'binance_futures_set_margin_type':
                 await futuresAPI.setMarginType(args.symbol, args.marginType);
@@ -1001,8 +1001,8 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     success: true,
                     data: {
                         symbol: args.symbol,
-                        marginType: args.marginType
-                    }
+                        marginType: args.marginType,
+                    },
                 };
             case 'binance_futures_trade_history':
                 const trades = await futuresAPI.getUserTrades({
@@ -1010,11 +1010,11 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     startTime: args.startTime,
                     endTime: args.endTime,
                     fromId: args.fromId,
-                    limit: args.limit
+                    limit: args.limit,
                 });
                 return {
                     success: true,
-                    data: trades.map(trade => ({
+                    data: trades.map((trade) => ({
                         id: trade.id,
                         orderId: trade.orderId,
                         symbol: trade.symbol,
@@ -1029,8 +1029,8 @@ export async function handleFuturesTool(name, args, binanceClient) {
                         time: trade.time,
                         positionSide: trade.positionSide,
                         buyer: trade.buyer,
-                        maker: trade.maker
-                    }))
+                        maker: trade.maker,
+                    })),
                 };
             case 'binance_futures_cancel_all_orders':
                 const openOrdersToCancel = await futuresAPI.getOpenOrders(args.symbol);
@@ -1041,7 +1041,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
                         cancelResults.push({
                             orderId: cancelled.orderId,
                             status: 'CANCELLED',
-                            success: true
+                            success: true,
                         });
                     }
                     catch (error) {
@@ -1049,7 +1049,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
                             orderId: order.orderId,
                             status: 'FAILED',
                             success: false,
-                            error: error instanceof Error ? error.message : '取消失败'
+                            error: error instanceof Error ? error.message : '取消失败',
                         });
                     }
                 }
@@ -1057,10 +1057,10 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     success: true,
                     data: {
                         totalOrders: openOrdersToCancel.length,
-                        cancelled: cancelResults.filter(r => r.success).length,
-                        failed: cancelResults.filter(r => !r.success).length,
-                        results: cancelResults
-                    }
+                        cancelled: cancelResults.filter((r) => r.success).length,
+                        failed: cancelResults.filter((r) => !r.success).length,
+                        results: cancelResults,
+                    },
                 };
             case 'binance_futures_close_position':
                 const positions = await futuresAPI.getPositions(args.symbol);
@@ -1080,7 +1080,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
                             positionSide: position.positionSide,
                             type: 'MARKET',
                             quantity: positionAmt,
-                            reduceOnly: true
+                            reduceOnly: true,
                         });
                         closeResults.push({
                             symbol: position.symbol,
@@ -1088,7 +1088,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
                             orderId: closeOrder.orderId,
                             status: 'CLOSED',
                             success: true,
-                            closedAmount: positionAmt
+                            closedAmount: positionAmt,
                         });
                     }
                     catch (error) {
@@ -1097,7 +1097,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
                             positionSide: position.positionSide,
                             status: 'FAILED',
                             success: false,
-                            error: error instanceof Error ? error.message : '平仓失败'
+                            error: error instanceof Error ? error.message : '平仓失败',
                         });
                     }
                 }
@@ -1105,10 +1105,10 @@ export async function handleFuturesTool(name, args, binanceClient) {
                     success: true,
                     data: {
                         totalPositions: positions.length,
-                        closed: closeResults.filter(r => r.success).length,
-                        failed: closeResults.filter(r => !r.success).length,
-                        results: closeResults
-                    }
+                        closed: closeResults.filter((r) => r.success).length,
+                        failed: closeResults.filter((r) => !r.success).length,
+                        results: closeResults,
+                    },
                 };
             default:
                 throw new Error(`未知的合约交易工具: ${name}`);
@@ -1118,7 +1118,7 @@ export async function handleFuturesTool(name, args, binanceClient) {
         logger.error(`合约交易工具执行失败 ${name}:`, error);
         return {
             success: false,
-            error: error instanceof Error ? error.message : '未知错误'
+            error: error instanceof Error ? error.message : '未知错误',
         };
     }
 }

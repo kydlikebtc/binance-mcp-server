@@ -95,8 +95,7 @@ const handleTool = async (name, args) => {
     // 在HTTP模式下，检查是否需要从authorization token中初始化Binance客户端
     if (!binanceClient && serverMode === 'http') {
         if (httpModeCredentials) {
-            const success = initializeBinanceClient(httpModeCredentials.apiKey, httpModeCredentials.apiSecret, serverTestnet // 使用服务器端环境变量配置
-            );
+            const success = initializeBinanceClient(httpModeCredentials.apiKey, httpModeCredentials.apiSecret, serverTestnet);
             if (!success) {
                 return {
                     success: false,
@@ -253,18 +252,72 @@ async function main() {
             const port = parseInt(process.env.PORT || '3000');
             const host = process.env.HOST || '0.0.0.0';
             // 创建HTTP服务器
-            const httpServer = http.createServer((req, res) => {
+            // const httpServer = http.createServer((req, res) => {
+            //   if (req.method === 'GET' && req.url === '/message') {
+            //     // 处理authorization token
+            //     const authHeader = req.headers.authorization;
+            //     logger.warn('authHeader=======', authHeader);
+            //     if (authHeader) {
+            //       const credentials = AuthTokenHandler.parseCredentials(authHeader);
+            //       logger.warn('credentials-------', credentials);
+            //       if (credentials) {
+            //         httpModeCredentials = credentials;
+            //         logger.info(`Authorization token已解析，测试网模式: ${serverTestnet ? '是' : '否'}`);
+            //       } else {
+            //         logger.warn(
+            //           `无效的authorization token格式，期望格式: apiKey.secretKey---${authHeader}===${JSON.stringify(
+            //             credentials,
+            //           )}`,
+            //         );
+            //         res.writeHead(401);
+            //         res.end('Unauthorized: Invalid authorization token format. Expected: apiKey.secretKey');
+            //         return;
+            //       }
+            //     } else {
+            //       logger.warn('缺少authorization token');
+            //       res.writeHead(401);
+            //       res.end('Unauthorized: Missing authorization token');
+            //       return;
+            //     }
+            //     // SSE连接处理
+            //     const transport = new SSEServerTransport('/message', res);
+            //     server.connect(transport).catch((error) => {
+            //       logger.error('SSE连接失败:', error);
+            //       res.writeHead(500);
+            //       res.end('Internal Server Error');
+            //     });
+            //   } else if (req.method === 'POST' && req.url === '/message') {
+            //     // POST消息处理 - 需要根据sessionId路由
+            //     res.writeHead(405);
+            //     res.end('Method Not Allowed - Use SSE for message transport');
+            //   } else {
+            //     res.writeHead(404);
+            //     res.end('Not Found');
+            //   }
+            // });
+            const httpServer = http.createServer(async (req, res) => {
                 if (req.method === 'GET' && req.url === '/message') {
+                    // 设置CORS和SSE响应头
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+                    res.setHeader('Access-Control-Allow-Headers', 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization');
+                    res.setHeader('Access-Control-Expose-Headers', 'Content-Length,Content-Range');
+                    res.setHeader('Cache-Control', 'no-cache');
+                    res.setHeader('Connection', 'keep-alive');
+                    res.setHeader('Content-Type', 'text/event-stream');
                     // 处理authorization token
                     const authHeader = req.headers.authorization;
+                    logger.warn('authHeader=======', req.headers);
+                    logger.warn('authHeader=======', authHeader);
                     if (authHeader) {
                         const credentials = AuthTokenHandler.parseCredentials(authHeader);
+                        logger.warn('credentials-------', credentials);
                         if (credentials) {
                             httpModeCredentials = credentials;
                             logger.info(`Authorization token已解析，测试网模式: ${serverTestnet ? '是' : '否'}`);
                         }
                         else {
-                            logger.warn('无效的authorization token格式，期望格式: apiKey.secretKey');
+                            logger.warn(`无效的authorization token格式，期望格式: apiKey.secretKey---${authHeader}===${JSON.stringify(credentials)}`);
                             res.writeHead(401);
                             res.end('Unauthorized: Invalid authorization token format. Expected: apiKey.secretKey');
                             return;
@@ -277,12 +330,49 @@ async function main() {
                         return;
                     }
                     // SSE连接处理
+                    logger.info('开始建立SSE连接...');
                     const transport = new SSEServerTransport('/message', res);
-                    server.connect(transport).catch((error) => {
+                    logger.info('transport sessionId...', transport.sessionId);
+                    try {
+                        await server.connect(transport);
+                        logger.info('SSE连接建立成功');
+                        // 连接成功后，初始化Binance客户端
+                        if (httpModeCredentials) {
+                            const success = initializeBinanceClient(httpModeCredentials.apiKey, httpModeCredentials.apiSecret, serverTestnet);
+                            if (success) {
+                                const tools = getAllTools();
+                                logger.info(`HTTP模式初始化完成，可用工具数量: ${tools.length}`);
+                                logger.info('工具类别分布:');
+                                logger.info(`  - 账户管理: 5个工具`);
+                                logger.info(`  - 现货交易: 6个工具`);
+                                logger.info(`  - 合约交易: 9个工具`);
+                                logger.info(`  - 市场数据: 9个工具`);
+                                logger.info(`  - 高级分析: 6个工具`);
+                            }
+                            else {
+                                logger.error('HTTP模式下Binance客户端初始化失败');
+                            }
+                        }
+                        else {
+                            logger.warn('HTTP模式下缺少API凭据，无法初始化Binance客户端');
+                        }
+                    }
+                    catch (error) {
                         logger.error('SSE连接失败:', error);
                         res.writeHead(500);
                         res.end('Internal Server Error');
-                    });
+                    }
+                }
+                else if (req.method === 'OPTIONS' && req.url === '/message') {
+                    // 处理预检请求
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+                    res.setHeader('Access-Control-Allow-Headers', 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization');
+                    res.setHeader('Access-Control-Max-Age', '1728000');
+                    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+                    res.setHeader('Content-Length', '0');
+                    res.writeHead(204);
+                    res.end();
                 }
                 else if (req.method === 'POST' && req.url === '/message') {
                     // POST消息处理 - 需要根据sessionId路由
@@ -294,6 +384,7 @@ async function main() {
                     res.end('Not Found');
                 }
             });
+            // await server.connect(new SSEServerTransport('/message', httpServer as unknown as ServerResponse));
             // 启动HTTP服务器
             httpServer.listen(port, host, () => {
                 logger.info(`HTTP SSE 服务器启动在端口 ${port}，访问路径: http://${host}:${port}/message`);

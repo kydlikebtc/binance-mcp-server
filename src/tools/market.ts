@@ -56,12 +56,13 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
         properties: {
           symbol: {
             type: 'string',
-            description: '指定交易对，如"BTCUSDT"、"ETHUSDT"等。不填则返回所有现货交易对的价格（为性能考虑，限制返回前100个活跃交易对）。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD', 'ADAUSDT']
-          }
+            description:
+              '指定交易对，如"BTCUSDT"、"ETHUSDT"等。不填则返回所有现货交易对的价格（为性能考虑，限制返回前100个活跃交易对）。',
+            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD', 'ADAUSDT'],
+          },
         },
-        required: []
-      }
+        required: [],
+      },
     },
     {
       name: 'binance_futures_price',
@@ -113,12 +114,13 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
         properties: {
           symbol: {
             type: 'string',
-            description: '指定合约，如"BTCUSDT"、"ETHUSDT"等USDT永续合约。不填则返回所有合约的价格（为性能考虑，限制返回前100个活跃合约）。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT']
-          }
+            description:
+              '指定合约，如"BTCUSDT"、"ETHUSDT"等USDT永续合约。不填则返回所有合约的价格（为性能考虑，限制返回前100个活跃合约）。',
+            examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'DOTUSDT'],
+          },
         },
-        required: []
-      }
+        required: [],
+      },
     },
     {
       name: 'binance_spot_orderbook',
@@ -184,16 +186,17 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
           symbol: {
             type: 'string',
             description: '必填。要查询的现货交易对，如"BTCUSDT"。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
           },
           limit: {
             type: 'number',
-            description: '返回的买盘和卖盘档位数量。可选值：5, 10, 20, 50, 100, 500, 1000, 5000。默认100。数值越大响应越慢但信息越完整。',
-            enum: [5, 10, 20, 50, 100, 500, 1000, 5000]
-          }
+            description:
+              '返回的买盘和卖盘档位数量。可选值：5, 10, 20, 50, 100, 500, 1000, 5000。默认100。数值越大响应越慢但信息越完整。',
+            enum: [5, 10, 20, 50, 100, 500, 1000, 5000],
+          },
         },
-        required: ['symbol']
-      }
+        required: ['symbol'],
+      },
     },
     {
       name: 'binance_spot_klines',
@@ -247,32 +250,34 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
           symbol: {
             type: 'string',
             description: '必填。要查询的现货交易对，如"BTCUSDT"。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
+            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
           },
           interval: {
             type: 'string',
             enum: ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'],
-            description: 'K线时间间隔：1m=1分钟, 5m=5分钟, 15m=15分钟, 1h=1小时, 4h=4小时, 1d=1天, 1w=1周, 1M=1月。短间隔适合短线分析，长间隔适合趋势分析。'
+            description:
+              'K线时间间隔：1m=1分钟, 5m=5分钟, 15m=15分钟, 1h=1小时, 4h=4小时, 1d=1天, 1w=1周, 1M=1月。短间隔适合短线分析，长间隔适合趋势分析。',
           },
           limit: {
             type: 'number',
-            description: '返回K线数量。默认500，最大1000。建议根据分析需要选择合适数量：短线分析用100-300，长线分析用500-1000。',
+            description:
+              '返回K线数量。默认500，最大1000。建议根据分析需要选择合适数量：短线分析用100-300，长线分析用500-1000。',
             minimum: 1,
-            maximum: 1000
+            maximum: 1000,
           },
           startTime: {
             type: 'number',
             description: '查询开始时间，13位时间戳（毫秒）。与endTime配合使用可查询特定时间段的数据。',
-            minimum: 1000000000000
+            minimum: 1000000000000,
           },
           endTime: {
             type: 'number',
             description: '查询结束时间，13位时间戳（毫秒）。必须大于startTime。不填则默认到当前时间。',
-            minimum: 1000000000000
-          }
+            minimum: 1000000000000,
+          },
         },
-        required: ['symbol', 'interval']
-      }
+        required: ['symbol', 'interval'],
+      },
     },
     {
       name: 'binance_futures_klines',
@@ -332,32 +337,34 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
           symbol: {
             type: 'string',
             description: '必填。要查询的合约，如"BTCUSDT"永续合约。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
+            examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
           },
           interval: {
             type: 'string',
             enum: ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M'],
-            description: 'K线时间间隔：1m=1分钟, 5m=5分钟, 15m=15分钟, 1h=1小时, 4h=4小时, 1d=1天。建议：高频交易用1m-15m，波段交易用1h-4h，趋势交易用1d-1w。'
+            description:
+              'K线时间间隔：1m=1分钟, 5m=5分钟, 15m=15分钟, 1h=1小时, 4h=4小时, 1d=1天。建议：高频交易用1m-15m，波段交易用1h-4h，趋势交易用1d-1w。',
           },
           limit: {
             type: 'number',
-            description: '返回K线数量。默认500，最大1000。合约交易建议：日内交易用100-200，波段交易用300-500，趋势分析用500-1000。',
+            description:
+              '返回K线数量。默认500，最大1000。合约交易建议：日内交易用100-200，波段交易用300-500，趋势分析用500-1000。',
             minimum: 1,
-            maximum: 1000
+            maximum: 1000,
           },
           startTime: {
             type: 'number',
             description: '查询开始时间，13位时间戳（毫秒）。用于查询历史特定时间段的合约价格走势。',
-            minimum: 1000000000000
+            minimum: 1000000000000,
           },
           endTime: {
             type: 'number',
             description: '查询结束时间，13位时间戳（毫秒）。不填则默认到当前时间。时间范围不要过大以免超时。',
-            minimum: 1000000000000
-          }
+            minimum: 1000000000000,
+          },
         },
-        required: ['symbol', 'interval']
-      }
+        required: ['symbol', 'interval'],
+      },
     },
     {
       name: 'binance_spot_24hr_ticker',
@@ -421,12 +428,13 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
         properties: {
           symbol: {
             type: 'string',
-            description: '指定交易对，如"BTCUSDT"。不填则返回所有现货交易对的24小时统计（为性能考虑，限制返回前50个活跃交易对）。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD']
-          }
+            description:
+              '指定交易对，如"BTCUSDT"。不填则返回所有现货交易对的24小时统计（为性能考虑，限制返回前50个活跃交易对）。',
+            examples: ['BTCUSDT', 'ETHUSDT', 'BNBBUSD'],
+          },
         },
-        required: []
-      }
+        required: [],
+      },
     },
     {
       name: 'binance_futures_24hr_ticker',
@@ -498,12 +506,13 @@ export function createMarketTools(binanceClient: BinanceClient): Tool[] {
         properties: {
           symbol: {
             type: 'string',
-            description: '指定合约，如"BTCUSDT"永续合约。不填则返回所有合约的24小时统计（为性能考虑，限制返回前50个活跃合约）。',
-            examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
-          }
+            description:
+              '指定合约，如"BTCUSDT"永续合约。不填则返回所有合约的24小时统计（为性能考虑，限制返回前50个活跃合约）。',
+            examples: ['BTCUSDT', 'ETHUSDT', 'ADAUSDT'],
+          },
         },
-        required: []
-      }
+        required: [],
+      },
     },
     {
       name: 'binance_exchange_info',
@@ -570,11 +579,11 @@ WebSocket：每连接 5 个数据流
           market: {
             type: 'string',
             enum: ['spot', 'futures'],
-            description: 'spot=现货市场信息（默认），futures=合约市场信息。不同市场有不同的交易规则和限制。'
-          }
+            description: 'spot=现货市场信息（默认），futures=合约市场信息。不同市场有不同的交易规则和限制。',
+          },
         },
-        required: []
-      }
+        required: [],
+      },
     },
     {
       name: 'binance_server_time',
@@ -632,9 +641,9 @@ API影响：✅ 无影响
       inputSchema: {
         type: 'object',
         properties: {},
-        required: []
-      }
-    }
+        required: [],
+      },
+    },
   ];
 }
 
@@ -651,17 +660,19 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
             success: true,
             data: {
               symbol: price.symbol,
-              price: parseFloat(price.price)
-            }
+              price: parseFloat(price.price),
+            },
           };
         } else {
           const prices = await spotAPI.getAllPrices();
           return {
             success: true,
-            data: prices.map(p => ({
-              symbol: p.symbol,
-              price: parseFloat(p.price)
-            })).slice(0, 100) // 限制返回数量
+            data: prices
+              .map((p) => ({
+                symbol: p.symbol,
+                price: parseFloat(p.price),
+              }))
+              .slice(0, 100), // 限制返回数量
           };
         }
 
@@ -672,17 +683,19 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
             success: true,
             data: {
               symbol: price.symbol,
-              price: parseFloat(price.price)
-            }
+              price: parseFloat(price.price),
+            },
           };
         } else {
           const prices = await futuresAPI.getAllPrices();
           return {
             success: true,
-            data: prices.map(p => ({
-              symbol: p.symbol,
-              price: parseFloat(p.price)
-            })).slice(0, 100) // 限制返回数量
+            data: prices
+              .map((p) => ({
+                symbol: p.symbol,
+                price: parseFloat(p.price),
+              }))
+              .slice(0, 100), // 限制返回数量
           };
         }
 
@@ -693,15 +706,15 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
           data: {
             symbol: args.symbol,
             lastUpdateId: orderbook.lastUpdateId,
-            bids: orderbook.bids.map(bid => ({
+            bids: orderbook.bids.map((bid) => ({
               price: parseFloat(bid[0]),
-              quantity: parseFloat(bid[1])
+              quantity: parseFloat(bid[1]),
             })),
-            asks: orderbook.asks.map(ask => ({
+            asks: orderbook.asks.map((ask) => ({
               price: parseFloat(ask[0]),
-              quantity: parseFloat(ask[1])
-            }))
-          }
+              quantity: parseFloat(ask[1]),
+            })),
+          },
         };
 
       case 'binance_spot_klines':
@@ -710,12 +723,12 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
           interval: args.interval,
           limit: args.limit,
           startTime: args.startTime,
-          endTime: args.endTime
+          endTime: args.endTime,
         });
 
         return {
           success: true,
-          data: spotKlines.map(kline => ({
+          data: spotKlines.map((kline) => ({
             openTime: kline.openTime,
             open: parseFloat(kline.open),
             high: parseFloat(kline.high),
@@ -726,8 +739,8 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
             quoteAssetVolume: parseFloat(kline.quoteAssetVolume),
             numberOfTrades: kline.numberOfTrades,
             takerBuyBaseAssetVolume: parseFloat(kline.takerBuyBaseAssetVolume),
-            takerBuyQuoteAssetVolume: parseFloat(kline.takerBuyQuoteAssetVolume)
-          }))
+            takerBuyQuoteAssetVolume: parseFloat(kline.takerBuyQuoteAssetVolume),
+          })),
         };
 
       case 'binance_futures_klines':
@@ -736,12 +749,12 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
           interval: args.interval,
           limit: args.limit,
           startTime: args.startTime,
-          endTime: args.endTime
+          endTime: args.endTime,
         });
 
         return {
           success: true,
-          data: futuresKlines.map(kline => ({
+          data: futuresKlines.map((kline) => ({
             openTime: kline.openTime,
             open: parseFloat(kline.open),
             high: parseFloat(kline.high),
@@ -752,13 +765,13 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
             quoteAssetVolume: parseFloat(kline.quoteAssetVolume),
             numberOfTrades: kline.numberOfTrades,
             takerBuyBaseAssetVolume: parseFloat(kline.takerBuyBaseAssetVolume),
-            takerBuyQuoteAssetVolume: parseFloat(kline.takerBuyQuoteAssetVolume)
-          }))
+            takerBuyQuoteAssetVolume: parseFloat(kline.takerBuyQuoteAssetVolume),
+          })),
         };
 
       case 'binance_spot_24hr_ticker':
         const binanceClient_spot = binanceClient.getClient();
-        const spotTicker = args.symbol 
+        const spotTicker = args.symbol
           ? await binanceClient_spot.dailyStats({ symbol: args.symbol })
           : await binanceClient_spot.dailyStats();
 
@@ -781,20 +794,22 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
               quoteVolume: parseFloat(spotTicker.quoteVolume),
               openTime: spotTicker.openTime,
               closeTime: spotTicker.closeTime,
-              count: spotTicker.count
-            }
+              count: spotTicker.count,
+            },
           };
         } else {
           return {
             success: true,
-            data: Object.values(spotTicker as any).slice(0, 50).map((ticker: any) => ({
-              symbol: ticker.symbol,
-              priceChange: parseFloat(ticker.priceChange),
-              priceChangePercent: parseFloat(ticker.priceChangePercent),
-              lastPrice: parseFloat(ticker.lastPrice),
-              volume: parseFloat(ticker.volume),
-              quoteVolume: parseFloat(ticker.quoteVolume)
-            }))
+            data: Object.values(spotTicker as any)
+              .slice(0, 50)
+              .map((ticker: any) => ({
+                symbol: ticker.symbol,
+                priceChange: parseFloat(ticker.priceChange),
+                priceChangePercent: parseFloat(ticker.priceChangePercent),
+                lastPrice: parseFloat(ticker.lastPrice),
+                volume: parseFloat(ticker.volume),
+                quoteVolume: parseFloat(ticker.quoteVolume),
+              })),
           };
         }
 
@@ -820,27 +835,27 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
               quoteVolume: parseFloat(futuresTicker.quoteVolume),
               openTime: futuresTicker.openTime,
               closeTime: futuresTicker.closeTime,
-              count: futuresTicker.count
-            }
+              count: futuresTicker.count,
+            },
           };
         } else {
           return {
             success: true,
-            data: (futuresTicker as any[]).slice(0, 50).map(ticker => ({
+            data: (futuresTicker as any[]).slice(0, 50).map((ticker) => ({
               symbol: ticker.symbol,
               priceChange: parseFloat(ticker.priceChange),
               priceChangePercent: parseFloat(ticker.priceChangePercent),
               lastPrice: parseFloat(ticker.lastPrice),
               volume: parseFloat(ticker.volume),
-              quoteVolume: parseFloat(ticker.quoteVolume)
-            }))
+              quoteVolume: parseFloat(ticker.quoteVolume),
+            })),
           };
         }
 
       case 'binance_exchange_info':
         const exchangeInfo = await binanceClient.getExchangeInfo();
         const market = args.market || 'spot';
-        
+
         return {
           success: true,
           data: {
@@ -849,14 +864,14 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
             rateLimits: exchangeInfo.rateLimits,
             exchangeFilters: exchangeInfo.exchangeFilters,
             symbolCount: exchangeInfo.symbols.length,
-            symbols: exchangeInfo.symbols.slice(0, 20).map(symbol => ({
+            symbols: exchangeInfo.symbols.slice(0, 20).map((symbol) => ({
               symbol: symbol.symbol,
               status: symbol.status,
               baseAsset: symbol.baseAsset,
               quoteAsset: symbol.quoteAsset,
-              permissions: symbol.permissions
-            }))
-          }
+              permissions: symbol.permissions,
+            })),
+          },
         };
 
       case 'binance_server_time':
@@ -866,8 +881,8 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
           data: {
             serverTime: serverTime,
             localTime: Date.now(),
-            timeDifference: Date.now() - serverTime
-          }
+            timeDifference: Date.now() - serverTime,
+          },
         };
 
       default:
@@ -877,7 +892,7 @@ export async function handleMarketTool(name: string, args: any, binanceClient: B
     logger.error(`市场数据工具执行失败 ${name}:`, error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : '未知错误'
+      error: error instanceof Error ? error.message : '未知错误',
     };
   }
 }

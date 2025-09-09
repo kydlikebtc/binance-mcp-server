@@ -20,11 +20,11 @@ dotenv.config({ path: join(projectRoot, '.env') });
 
 // 验证必要的环境变量
 const requiredEnvVars = ['BINANCE_API_KEY', 'BINANCE_SECRET_KEY'];
-const missingVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+const missingVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
 
 if (missingVars.length > 0) {
   console.error('\n❌ 缺少必要的环境变量:');
-  missingVars.forEach(envVar => {
+  missingVars.forEach((envVar) => {
     console.error(`   - ${envVar}`);
   });
   console.error('\n请在 .env 文件中设置这些环境变量，或通过命令行参数传递。');
@@ -42,7 +42,7 @@ const serverConfig = {
   port: process.env.PORT || 3000,
   host: process.env.HOST || '0.0.0.0',
   testnet: process.env.BINANCE_TESTNET === 'true',
-  logLevel: process.env.LOG_LEVEL || 'info'
+  logLevel: process.env.LOG_LEVEL || 'info',
 };
 
 console.log('\n🚀 启动 Binance MCP HTTP 服务器');
@@ -50,7 +50,11 @@ console.log('=====================================');
 console.log(`📊 交易环境: ${serverConfig.testnet ? '测试网' : '主网'}`);
 console.log(`🌐 监听地址: ${serverConfig.host}:${serverConfig.port}`);
 console.log(`📝 日志级别: ${serverConfig.logLevel}`);
-console.log(`🔗 访问地址: http://${serverConfig.host === '0.0.0.0' ? 'localhost' : serverConfig.host}:${serverConfig.port}/message`);
+console.log(
+  `🔗 访问地址: http://${serverConfig.host === '0.0.0.0' ? 'localhost' : serverConfig.host}:${
+    serverConfig.port
+  }/message`,
+);
 console.log('=====================================\n');
 
 // 设置子进程环境变量
@@ -59,7 +63,7 @@ const childEnv = {
   SERVER_MODE: 'http',
   PORT: serverConfig.port.toString(),
   HOST: serverConfig.host,
-  LOG_LEVEL: serverConfig.logLevel
+  LOG_LEVEL: serverConfig.logLevel,
 };
 
 // 启动MCP服务器进程
@@ -67,7 +71,7 @@ const mcpServerPath = join(projectRoot, 'build', 'index.js');
 const childProcess = spawn('node', [mcpServerPath], {
   env: childEnv,
   stdio: ['pipe', 'pipe', 'pipe'],
-  cwd: projectRoot
+  cwd: projectRoot,
 });
 
 // 处理子进程输出
@@ -103,11 +107,11 @@ childProcess.on('error', (error) => {
 // 优雅关闭处理
 const shutdown = (signal) => {
   console.log(`\n📥 收到 ${signal} 信号，正在关闭服务器...`);
-  
+
   // 向子进程发送关闭信号
   if (childProcess && !childProcess.killed) {
     childProcess.kill(signal);
-    
+
     // 等待子进程关闭，超时后强制终止
     setTimeout(() => {
       if (!childProcess.killed) {
