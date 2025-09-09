@@ -28,7 +28,8 @@
     "@modelcontextprotocol/sdk": "^1.17.5",
     "binance-api-node": "^0.12.7",
     "crypto": "^1.0.1",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

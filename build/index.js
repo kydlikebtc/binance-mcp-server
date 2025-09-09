@@ -375,9 +375,96 @@ async function main() {
                     res.end();
                 }
                 else if (req.method === 'POST' && req.url === '/message') {
-                    // POST消息处理 - 需要根据sessionId路由
-                    res.writeHead(405);
-                    res.end('Method Not Allowed - Use SSE for message transport');
+                    // POST消息处理 - MCP协议消息
+                    logger.info('收到POST消息请求');
+                    // 设置CORS头
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+                    res.setHeader('Access-Control-Allow-Headers', 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization');
+                    res.setHeader('Content-Type', 'application/json');
+                    let body = '';
+                    req.on('data', (chunk) => {
+                        body += chunk.toString();
+                    });
+                    req.on('end', async () => {
+                        try {
+                            const message = JSON.parse(body);
+                            logger.info('收到MCP消息:', JSON.stringify(message, null, 2));
+                            // 处理MCP消息
+                            let result;
+                            if (message.method === 'initialize') {
+                                result = {
+                                    jsonrpc: '2.0',
+                                    id: message.id,
+                                    result: {
+                                        protocolVersion: '2024-11-05',
+                                        capabilities: { tools: {} },
+                                        serverInfo: {
+                                            name: 'binance-mcp-server',
+                                            version: '1.0.0',
+                                        },
+                                    },
+                                };
+                            }
+                            else if (message.method === 'tools/list') {
+                                const tools = getAllTools();
+                                result = {
+                                    jsonrpc: '2.0',
+                                    id: message.id,
+                                    result: { tools },
+                                };
+                            }
+                            else if (message.method === 'tools/call') {
+                                const { name, arguments: args } = message.params;
+                                const toolResult = await handleTool(name, args || {});
+                                if (toolResult.success) {
+                                    result = {
+                                        jsonrpc: '2.0',
+                                        id: message.id,
+                                        result: {
+                                            content: [
+                                                {
+                                                    type: 'text',
+                                                    text: typeof toolResult.data === 'string' ? toolResult.data : JSON.stringify(toolResult.data, null, 2),
+                                                },
+                                            ],
+                                        },
+                                    };
+                                }
+                                else {
+                                    result = {
+                                        jsonrpc: '2.0',
+                                        id: message.id,
+                                        error: {
+                                            code: -32603,
+                                            message: toolResult.error,
+                                        },
+                                    };
+                                }
+                            }
+                            else {
+                                result = {
+                                    jsonrpc: '2.0',
+                                    id: message.id,
+                                    error: {
+                                        code: -32601,
+                                        message: `Method not found: ${message.method}`,
+                                    },
+                                };
+                            }
+                            res.writeHead(200);
+                            res.end(JSON.stringify(result));
+                        }
+                        catch (error) {
+                            logger.error('解析POST消息失败:', error);
+                            res.writeHead(400);
+                            res.end(JSON.stringify({
+                                jsonrpc: '2.0',
+                                id: null,
+                                error: { code: -32700, message: 'Parse error' }
+                            }));
+                        }
+                    });
                 }
                 else {
                     res.writeHead(404);
